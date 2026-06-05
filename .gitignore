@@ -1,0 +1,33 @@
+# Swift Package Manager
+.build/
+.swiftpm/
+Package.resolved
+
+# Build artifacts
+build/
+release/
+*.dmg
+release.log
+
+# Xcode
+*.xcodeproj/
+*.xcuserdata/
+xcuserdata/
+DerivedData/
+
+# Local config (signing identity, notary credentials, etc.)
+.env
+.env.local
+.env.*.local
+
+# Personal library data — never commit user snippets
+snippy-library.json
+
+# macOS
+.DS_Store
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
