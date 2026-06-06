@@ -132,10 +132,17 @@ if [ "${SNIPPY_SKIP_NOTARIZE:-0}" != "1" ]; then
     xcrun stapler validate "$DMG_PATH"
 fi
 
+# Produce a version-less copy so https://github.com/.../releases/latest/download/Snippy.dmg
+# is a stable URL across every release — the website's Download button never breaks.
+STABLE_DMG_PATH="${RELEASE_DIR}/${APP_NAME}.dmg"
+cp "$DMG_PATH" "$STABLE_DMG_PATH"
+
 echo
 echo "✓ Release ready:"
 echo "  App: $APP_DIR"
-echo "  DMG: $DMG_PATH"
+echo "  DMG (versioned): $DMG_PATH"
+echo "  DMG (stable):    $STABLE_DMG_PATH"
 echo
-echo "Upload the DMG to a GitHub Release with:"
-echo "  gh release create v${VERSION} \"$DMG_PATH\" --title \"Snippy v${VERSION}\" --notes-file CHANGELOG.md"
+echo "Upload BOTH to a GitHub Release with:"
+echo "  gh release create v${VERSION} \"$DMG_PATH\" \"$STABLE_DMG_PATH\" \\"
+echo "    --title \"Snippy v${VERSION}\" --notes \"<your release notes>\""
