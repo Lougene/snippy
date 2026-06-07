@@ -134,6 +134,40 @@
         .step h3 { font-size: 17px; margin-bottom: 6px; }
         .step p { margin: 0; color: #555; font-size: 15px; }
 
+        /* === Tips === */
+        .tips {
+            margin-top: 56px;
+            max-width: 720px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .tips h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .tips ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .tips li {
+            padding: 14px 0;
+            border-top: 1px solid #f0f0f2;
+            color: #444;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+        .tips li:last-child { border-bottom: 1px solid #f0f0f2; }
+        .tips strong { color: #1d1d1f; }
+        code {
+            background: #f4f4f6;
+            padding: 1px 6px;
+            border-radius: 4px;
+            font-family: ui-monospace, "SF Mono", Menlo, monospace;
+            font-size: 0.92em;
+        }
+
         /* === Privacy callout === */
         .privacy {
             background: #fafafa;
@@ -240,6 +274,38 @@
                     <h3>Add a snippet</h3>
                     <p>Click the menu bar icon → Open Library → make your first snippet. Try it in any app.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW TO USE -->
+    <section class="howto">
+        <div class="container">
+            <h2>How to use Snippy</h2>
+            <div class="steps">
+                <div class="step">
+                    <h3>Open the library</h3>
+                    <p>Click Snippy in the menu bar → <em>Open Library</em>. Groups on the left, snippets in the middle, editor on the right.</p>
+                </div>
+                <div class="step">
+                    <h3>Create a snippet</h3>
+                    <p>Click <em>+</em> at the bottom of the snippet list. Give it an abbreviation like <code>;sig</code> and the content to paste. Saves automatically.</p>
+                </div>
+                <div class="step">
+                    <h3>Type it anywhere</h3>
+                    <p>Switch to any text field — Mail, Slack, Notes, your browser — type the abbreviation. Snippy replaces it instantly.</p>
+                </div>
+            </div>
+
+            <div class="tips">
+                <h3>Tips that pay off</h3>
+                <ul>
+                    <li><strong>Prefix abbreviations with a sigil</strong> like <code>;</code> or <code>\</code> — <code>;sig</code> never collides with real words; <code>sig</code> might fire inside "design".</li>
+                    <li><strong>Pick a trigger style.</strong> <em>Auto-expand</em> fires the instant you finish typing the abbreviation (best with sigils). <em>Require Tab/Space</em> waits for a space or tab (best for word-like abbreviations).</li>
+                    <li><strong>Override formatting</strong> is off by default so snippets paste in the destination's font and size. Turn it on per-snippet for rich signatures or other content you want pixel-perfect.</li>
+                    <li><strong>Group snippets</strong> by context — work, personal, a specific client — and toggle whole groups off when they don't apply.</li>
+                    <li><strong>Sync across Macs</strong>: <em>Settings → Storage → Choose Folder</em>, pick a folder in iCloud Drive or Dropbox, point each Mac at the same one.</li>
+                </ul>
             </div>
         </div>
     </section>

@@ -46,6 +46,22 @@ That's it.
 - **Your clipboard is preserved** — Snippy temporarily uses the clipboard to
   paste, then restores whatever you had on it.
 
+## Using Snippy
+
+Once installed and Accessibility-granted, the loop is three steps:
+
+1. **Open the library.** Menu bar → *Open Library*. Groups on the left, snippets in the middle, editor on the right.
+2. **Create a snippet.** Click *+* at the bottom of the snippet list. Give it a memorable abbreviation (e.g. `;sig`) and the content to paste. It saves automatically.
+3. **Type it anywhere.** Switch to any text field and type the abbreviation — Snippy detects it and pastes your content.
+
+### Tips that pay off
+
+- **Prefix abbreviations with a sigil** like `;` or `\`. `;sig` never collides with real words; `sig` could fire inside "design".
+- **Pick a trigger style** per snippet. *Auto-expand* fires the instant the abbreviation is typed — best with sigils. *Require Tab/Space* waits for a space or tab — best for word-like abbreviations.
+- **Override formatting** is off by default, so snippets paste in the destination's font and size (bullets and lists survive as text markers). Turn it on per-snippet for rich signatures or content you want pixel-perfect.
+- **Group snippets** by context — work, personal, a specific client. Toggle whole groups off when they don't apply.
+- **Watch for collision warnings.** When your abbreviation matches a macOS Text Replacement, the editor surfaces a warning — Snippy takes precedence cleanly.
+
 ## Privacy
 
 Snippy is built for privacy:
