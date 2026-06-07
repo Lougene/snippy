@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Snippy — a free, native macOS text expander</title>
+    <meta name="description" content="A native menu-bar text expander for macOS. Free. No telemetry. Open source.">
+
+    <!-- Open Graph (for nice link previews on Twitter, iMessage, Slack, etc.) -->
+    <meta property="og:title" content="Snippy">
+    <meta property="og:description" content="A free, native macOS text expander. Lives in your menu bar.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.getlever.com.au/snippy">
+    <!-- TODO: replace with a real 1200x630 OG image when you have a screenshot -->
+    <!-- <meta property="og:image" content="https://www.getlever.com.au/snippy/og.png"> -->
+
+    <style>
+        /* === Reset + base === */
+        *, *::before, *::after { box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; }
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", system-ui, sans-serif;
+            font-size: 17px;
+            line-height: 1.55;
+            color: #1d1d1f;
+            background: #fff;
+        }
+        a { color: inherit; }
+        h1, h2, h3 { line-height: 1.2; letter-spacing: -0.02em; margin: 0; }
+
+        /* === Layout === */
+        .container { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+        section { padding: 72px 0; }
+        section + section { border-top: 1px solid #f0f0f2; }
+
+        /* === Hero === */
+        .hero { padding: 96px 0 64px; text-align: center; }
+        .hero h1 {
+            font-size: clamp(40px, 7vw, 64px);
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+        .hero .tagline {
+            font-size: clamp(18px, 2.4vw, 22px);
+            color: #555;
+            max-width: 560px;
+            margin: 0 auto 40px;
+        }
+        .download {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #1d1d1f;
+            color: #fff;
+            text-decoration: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: transform 0.1s, background 0.1s;
+        }
+        .download:hover { background: #000; transform: translateY(-1px); }
+        .download:active { transform: translateY(0); }
+        .download .arrow { font-size: 22px; line-height: 1; }
+        .meta {
+            margin-top: 16px;
+            font-size: 14px;
+            color: #888;
+        }
+        .meta a { color: #888; text-decoration: underline; }
+
+        /* === Screenshot === */
+        .screenshot {
+            margin: 40px auto 0;
+            max-width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 30px 60px -20px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.04);
+            overflow: hidden;
+            background: #f5f5f7;
+            /* placeholder — swap for <img src="..."> when you have a screenshot */
+            aspect-ratio: 16 / 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* === Features === */
+        .features h2,
+        .install h2,
+        .privacy h2 {
+            font-size: 32px;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 32px;
+        }
+        .feature h3 { font-size: 18px; margin-bottom: 8px; }
+        .feature p { margin: 0; color: #555; font-size: 15px; }
+
+        /* === Install steps === */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 32px;
+            counter-reset: step;
+        }
+        .step {
+            position: relative;
+            padding-left: 56px;
+        }
+        .step::before {
+            counter-increment: step;
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: -4px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1d1d1f;
+            color: #fff;
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .step h3 { font-size: 17px; margin-bottom: 6px; }
+        .step p { margin: 0; color: #555; font-size: 15px; }
+
+        /* === Privacy callout === */
+        .privacy {
+            background: #fafafa;
+        }
+        .privacy-card {
+            max-width: 640px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .privacy-card p { color: #444; font-size: 16px; }
+        .privacy-points {
+            display: inline-flex;
+            flex-wrap: wrap;
+            gap: 8px 24px;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 24px 0 0;
+            color: #1d1d1f;
+            font-weight: 500;
+            font-size: 15px;
+        }
+        .privacy-points li::before { content: "✓ "; color: #2ea44f; font-weight: 700; }
+
+        /* === Footer === */
+        footer {
+            padding: 48px 0 64px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+            border-top: 1px solid #f0f0f2;
+        }
+        footer a { color: #555; }
+
+        /* === Mobile === */
+        @media (max-width: 600px) {
+            section { padding: 56px 0; }
+            .hero { padding: 64px 0 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container">
+            <h1>Snippy</h1>
+            <p class="tagline">A free, native macOS text expander. Lives in your menu bar and turns abbreviations into snippets you've defined.</p>
+
+            <a class="download" href="https://github.com/Lougene/snippy/releases/latest/download/Snippy.dmg">
+                Download for Mac
+                <span class="arrow">↓</span>
+            </a>
+            <p class="meta">
+                Requires macOS 14 (Sonoma) or later · Free · <a href="https://github.com/Lougene/snippy">Open source on GitHub</a>
+            </p>
+
+            <div class="screenshot">
+                <!-- TODO: replace with <img src="/snippy/screenshot.png" alt="Snippy library window" style="width:100%;height:auto;display:block"> -->
+                screenshot goes here
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features">
+        <div class="container">
+            <h2>What Snippy does</h2>
+            <div class="feature-grid">
+                <div class="feature">
+                    <h3>Snippets that fit your work</h3>
+                    <p>Plain text, rich text, or images. Group them, toggle them, choose how each one fires.</p>
+                </div>
+                <div class="feature">
+                    <h3>Matches the destination's style</h3>
+                    <p>Paste into Mail and your snippet uses Mail's font. Bullets and lists survive. Turn override formatting on per-snippet when you need it.</p>
+                </div>
+                <div class="feature">
+                    <h3>Plays nicely with macOS</h3>
+                    <p>When an abbreviation collides with a system Text Replacement, Snippy takes precedence cleanly. The editor tells you about collisions.</p>
+                </div>
+                <div class="feature">
+                    <h3>Your clipboard is safe</h3>
+                    <p>Snippy borrows the clipboard for the paste, then puts your previous contents right back.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSTALL -->
+    <section class="install">
+        <div class="container">
+            <h2>Three steps to install</h2>
+            <div class="steps">
+                <div class="step">
+                    <h3>Download &amp; drag</h3>
+                    <p>Open the DMG and drag Snippy to your Applications folder.</p>
+                </div>
+                <div class="step">
+                    <h3>Grant Accessibility</h3>
+                    <p>On first launch, Snippy asks for Accessibility permission so it can watch your keystrokes. Toggle it on in System Settings.</p>
+                </div>
+                <div class="step">
+                    <h3>Add a snippet</h3>
+                    <p>Click the menu bar icon → Open Library → make your first snippet. Try it in any app.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRIVACY -->
+    <section class="privacy">
+        <div class="container privacy-card">
+            <h2>Built for privacy</h2>
+            <p>Snippy was designed to do less, not more. It runs entirely on your Mac. Your snippets and your keystrokes never leave it.</p>
+            <ul class="privacy-points">
+                <li>No network requests</li>
+                <li>No telemetry</li>
+                <li>No accounts</li>
+                <li>Open source &amp; auditable</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            Made by <a href="https://www.getlever.com.au">Lougene</a> · <a href="https://github.com/Lougene/snippy">Source on GitHub</a> · <a href="https://github.com/Lougene/snippy/blob/main/LICENSE">MIT License</a>
+        </div>
+    </footer>
+
+</body>
+</html>
