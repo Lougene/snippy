@@ -16,12 +16,14 @@
     <string>6.0</string>
     <key>CFBundleName</key>
     <string>Snippy</string>
+    <key>CFBundleDisplayName</key>
+    <string>Snippy by Lever</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.0</string>
+    <string>1.1.0</string>
     <key>CFBundleVersion</key>
-    <string>1</string>
+    <string>3</string>
     <key>LSMinimumSystemVersion</key>
     <string>14.0</string>
     <key>LSUIElement</key>
@@ -29,6 +31,6 @@
     <key>NSHighResolutionCapable</key>
     <true/>
     <key>NSHumanReadableCopyright</key>
-    <string>Copyright © 2026 Lougene. MIT Licensed.</string>
+    <string>Snippy by Lever — a free productivity tool from Lever Automation Consulting (getlever.com.au). Copyright © 2026 Lever Automation Consulting. MIT Licensed.</string>
 </dict>
 </plist>

@@ -1,8 +1,31 @@
 # Changelog
 
-All notable changes to Snippy are documented here.
+All notable changes to **Snippy by Lever** — a free productivity tool from
+[Lever Automation Consulting](https://www.getlever.com.au) — are documented here.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.1.0] — 2026-06-19
+
+### Added
+- **Inline formatting toolbar** above each snippet editor — bold, italic,
+  underline, strikethrough, font size, text color, alignment (left/center/right/
+  justify), and bullet/numbered lists. Buttons highlight to reflect the
+  formatting at the cursor.
+- **About section** in Settings, with a link to
+  [getlever.com.au](https://www.getlever.com.au).
+
+### Changed
+- Rebranded to **Snippy by Lever** — a free productivity tool from
+  Lever Automation Consulting. Window titles, menu items, copyright, and
+  documentation updated accordingly. Bundle ID, file paths, and library
+  format are unchanged; existing installs upgrade in place.
+
+### Fixed
+- The macOS NSTextView inspector bar (the old floating font/size/alignment
+  toolbar) was leaking to the top of the library window, appearing above the
+  snippet list instead of next to its editor. It is now disabled — the new
+  inline SwiftUI toolbar takes its place.
 
 ## [1.0.0] — 2026-06-05
 

@@ -3,14 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Snippy — a free, native macOS text expander</title>
-    <meta name="description" content="A native menu-bar text expander for macOS. Free. No telemetry. Open source.">
+    <title>Snippy by Lever — a free, native macOS text expander</title>
+    <meta name="description" content="Snippy by Lever — a free, native menu-bar text expander for macOS from Lever Automation Consulting. No telemetry. Open source.">
 
     <!-- Open Graph (for nice link previews on Twitter, iMessage, Slack, etc.) -->
-    <meta property="og:title" content="Snippy">
-    <meta property="og:description" content="A free, native macOS text expander. Lives in your menu bar.">
+    <meta property="og:title" content="Snippy by Lever">
+    <meta property="og:description" content="A free, native macOS text expander from Lever Automation Consulting. Lives in your menu bar.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.getlever.com.au/snippy">
+    <meta property="og:site_name" content="Lever Automation Consulting">
     <!-- TODO: replace with a real 1200x630 OG image when you have a screenshot -->
     <!-- <meta property="og:image" content="https://www.getlever.com.au/snippy/og.png"> -->
 
@@ -36,10 +37,29 @@
 
         /* === Hero === */
         .hero { padding: 96px 0 64px; text-align: center; }
+        .hero .eyebrow {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #666;
+            background: #f4f4f6;
+            padding: 6px 14px;
+            border-radius: 999px;
+            margin-bottom: 24px;
+        }
+        .hero .eyebrow a { color: inherit; text-decoration: none; }
+        .hero .eyebrow a:hover { text-decoration: underline; }
         .hero h1 {
             font-size: clamp(40px, 7vw, 64px);
             font-weight: 700;
-            margin-bottom: 16px;
+            margin-bottom: 8px;
+        }
+        .hero .by-line {
+            font-size: clamp(16px, 1.8vw, 18px);
+            color: #888;
+            margin: 0 0 16px;
         }
         .hero .tagline {
             font-size: clamp(18px, 2.4vw, 22px);
@@ -214,8 +234,10 @@
     <!-- HERO -->
     <section class="hero">
         <div class="container">
-            <h1>Snippy</h1>
-            <p class="tagline">A free, native macOS text expander. Lives in your menu bar and turns abbreviations into snippets you've defined.</p>
+            <span class="eyebrow">A free tool by <a href="https://www.getlever.com.au">Lever Automation Consulting</a></span>
+            <h1>Snippy by Lever</h1>
+            <p class="by-line">A free productivity tool from <a href="https://www.getlever.com.au">getlever.com.au</a></p>
+            <p class="tagline">A native macOS text expander. Lives in your menu bar and turns abbreviations into snippets you've defined.</p>
 
             <a class="download" href="https://github.com/Lougene/snippy/releases/latest/download/Snippy.dmg">
                 Download for Mac
@@ -235,7 +257,7 @@
     <!-- FEATURES -->
     <section class="features">
         <div class="container">
-            <h2>What Snippy does</h2>
+            <h2>What Snippy by Lever does</h2>
             <div class="feature-grid">
                 <div class="feature">
                     <h3>Snippets that fit your work</h3>
@@ -281,7 +303,7 @@
     <!-- HOW TO USE -->
     <section class="howto">
         <div class="container">
-            <h2>How to use Snippy</h2>
+            <h2>How to use Snippy by Lever</h2>
             <div class="steps">
                 <div class="step">
                     <h3>Open the library</h3>
@@ -327,7 +349,15 @@
     <!-- FOOTER -->
     <footer>
         <div class="container">
-            Made by <a href="https://www.getlever.com.au">Lougene</a> · <a href="https://github.com/Lougene/snippy">Source on GitHub</a> · <a href="https://github.com/Lougene/snippy/blob/main/LICENSE">MIT License</a>
+            <p style="margin:0 0 8px;color:#444;font-size:15px;">
+                <strong>Snippy by Lever</strong> — a free productivity tool from
+                <a href="https://www.getlever.com.au"><strong>Lever Automation Consulting</strong></a>.
+            </p>
+            <p style="margin:0;">
+                <a href="https://www.getlever.com.au">getlever.com.au</a> ·
+                <a href="https://github.com/Lougene/snippy">Source on GitHub</a> ·
+                <a href="https://github.com/Lougene/snippy/blob/main/LICENSE">MIT License</a>
+            </p>
         </div>
     </footer>
 

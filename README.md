@@ -1,8 +1,13 @@
-# Snippy
+# Snippy by Lever
+
+**A free productivity tool from [Lever Automation Consulting](https://www.getlever.com.au).**
 
 A native macOS text expander. Lives in your menu bar, watches your keystrokes,
 and replaces abbreviations with snippets you've defined — plain text, rich text,
 or images.
+
+Snippy is free and open source. It's part of a small suite of productivity tools
+we publish at [getlever.com.au](https://www.getlever.com.au).
 
 <!-- TODO: replace with a real screenshot before v1.0.0 release -->
 <!-- ![Snippy library window](docs/screenshot.png) -->
@@ -121,6 +126,5 @@ MIT — see [LICENSE](LICENSE).
 
 ## Credits
 
-Built by **Lougene** ([getlever.com.au](https://www.getlever.com.au)).
-
-If Snippy is useful, [let me know](https://www.getlever.com.au).
+Built and maintained by **Lever Automation Consulting** ([getlever.com.au](https://www.getlever.com.au)).
+Free, no strings attached — if Snippy saves you time, take a look at our other tools.

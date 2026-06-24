@@ -20,7 +20,7 @@ struct MainWindow: View {
                 .frame(minWidth: 420)
         }
         .frame(minWidth: 900, minHeight: 540)
-        .navigationTitle("Snippy")
+        .navigationTitle("Snippy by Lever")
         .toolbar {
             ToolbarItem(placement: .status) {
                 statusBadge

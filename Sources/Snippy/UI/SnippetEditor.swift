@@ -8,6 +8,7 @@ struct SnippetEditor: View {
     @EnvironmentObject var engine: ExpansionEngine
 
     @State private var attributed: NSAttributedString = NSAttributedString(string: "")
+    @StateObject private var richTextCoordinator = RichTextCoordinator()
 
     private var conflictsWithMacOS: Bool {
         !snippet.abbreviation.isEmpty
@@ -83,7 +84,8 @@ struct SnippetEditor: View {
                 .help("Insert an image into the snippet content")
             }
 
-            RichTextEditor(text: $attributed)
+            RichTextToolbar(coordinator: richTextCoordinator)
+            RichTextEditor(text: $attributed, coordinator: richTextCoordinator)
                 .frame(minHeight: 240)
 
             Spacer()

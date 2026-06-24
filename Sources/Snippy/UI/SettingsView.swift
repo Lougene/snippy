@@ -64,9 +64,27 @@ struct SettingsView: View {
                     }
                 }
             }
+
+            Section("About") {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Snippy by Lever")
+                        .font(.headline)
+                    Text("A free productivity tool from Lever Automation Consulting.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    HStack(spacing: 4) {
+                        Text("Made by")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        Link("getlever.com.au", destination: URL(string: "https://www.getlever.com.au")!)
+                            .font(.caption)
+                    }
+                }
+                .padding(.vertical, 4)
+            }
         }
         .formStyle(.grouped)
-        .frame(width: 560, height: 480)
+        .frame(width: 560, height: 540)
     }
 
     private func pickFolder() {

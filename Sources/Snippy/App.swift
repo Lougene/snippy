@@ -23,7 +23,7 @@ struct SnippyApp: App {
         }
         .menuBarExtraStyle(.menu)
 
-        Window("Snippy Library", id: "library") {
+        Window("Snippy by Lever — Library", id: "library") {
             MainWindow()
                 .environmentObject(store)
                 .environmentObject(engine)
@@ -88,7 +88,7 @@ struct MenuContent: View {
 
             Divider()
 
-            Button("Quit Snippy") {
+            Button("Quit Snippy by Lever") {
                 NSApp.terminate(nil)
             }
             .keyboardShortcut("q")
