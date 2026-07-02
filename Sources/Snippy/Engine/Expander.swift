@@ -5,8 +5,14 @@ import Carbon.HIToolbox
 /// Performs the actual deletion of the trigger and insertion of the snippet content.
 /// Strategy: synthesize N backspaces, swap the pasteboard, send Cmd+V, restore pasteboard.
 final class Expander {
-    /// Time to wait between sending Cmd+V and restoring the previous pasteboard contents.
-    private let restoreDelay: TimeInterval = 0.25
+    /// Delay after writing our snippet to the pasteboard before firing Cmd+V, so the
+    /// paste never reads a half-written pasteboard.
+    private let settleDelay: TimeInterval = 0.03
+    /// Time to wait after Cmd+V before restoring the previous pasteboard. A synthetic
+    /// Cmd+V is consumed asynchronously by the destination app; if we restore too soon
+    /// the app pastes the *restored* (previous) clipboard instead of our snippet. This
+    /// is deliberately generous to cover slow apps (Chrome/Electron/Slack) under load.
+    private let restoreDelay: TimeInterval = 0.6
 
     func expand(deleteCount: Int,
                 content: NSAttributedString,
@@ -43,10 +49,19 @@ final class Expander {
             pasteboard.setString(text, forType: .string)
         }
 
-        sendCmdV()
+        // Let the pasteboard write commit before pasting, then remember the change
+        // count so we can tell if anything else (e.g. a real user copy) touched the
+        // clipboard during the restore window.
+        let ourChangeCount = pasteboard.changeCount
+        DispatchQueue.main.asyncAfter(deadline: .now() + settleDelay) {
+            self.sendCmdV()
 
-        DispatchQueue.main.asyncAfter(deadline: .now() + restoreDelay) {
-            self.restore(snapshot: saved, to: pasteboard)
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.restoreDelay) {
+                // If the change count moved past ours, something else wrote to the
+                // clipboard after our paste — don't clobber it with the stale snapshot.
+                guard pasteboard.changeCount == ourChangeCount else { return }
+                self.restore(snapshot: saved, to: pasteboard)
+            }
         }
     }
 
