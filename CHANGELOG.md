@@ -5,6 +5,20 @@ All notable changes to **Snippy by Lever** — a free productivity tool from
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.1] — 2026-07-15
+
+### Fixed
+- **Mangled expansions in slow apps (WhatsApp, Slack, other Electron apps).**
+  A trigger could paste a garbled result — leftover trigger characters plus a
+  truncated snippet (e.g. `;tm` producing `;tThanks for reaching ou`). Electron
+  apps process synthetic keystrokes on a throttled input queue, so the paste
+  raced ahead of the backspaces that clear the trigger, and the late backspaces
+  chewed characters off the end of the inserted text. Snippy now paces the
+  deletions and waits for them to be applied before pasting, with the delay
+  scaling to the trigger length, so the trigger is always fully cleared first.
+- **Clipboard-restore race** that could paste the *previous* clipboard contents
+  instead of the snippet. (Fixed on `main` after v1.1.0; first shipped here.)
+
 ## [1.1.0] — 2026-06-19
 
 ### Added

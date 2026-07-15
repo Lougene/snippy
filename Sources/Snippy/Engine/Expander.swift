@@ -13,13 +13,34 @@ final class Expander {
     /// the app pastes the *restored* (previous) clipboard instead of our snippet. This
     /// is deliberately generous to cover slow apps (Chrome/Electron/Slack) under load.
     private let restoreDelay: TimeInterval = 0.6
+    /// Spacing between successive synthetic backspaces. Slow destinations (Electron
+    /// apps like WhatsApp/Slack) process input on a throttled queue and will not
+    /// consume a tight burst of backspaces before the paste lands — the paste then
+    /// races ahead and the late backspaces chew characters off the *end* of the
+    /// inserted snippet. Spreading the backspaces out lets the app keep up.
+    private let perBackspaceDelay: TimeInterval = 0.012
+    /// Extra pause after the final backspace before we touch the pasteboard and
+    /// paste, so every deletion is committed by the destination first.
+    private let postBackspaceSettle: TimeInterval = 0.05
 
     func expand(deleteCount: Int,
                 content: NSAttributedString,
                 trailingTerminator: Character?,
                 overrideFormatting: Bool) {
-        sendBackspaces(deleteCount)
+        // Delete the trigger first, then paste — but only once every backspace has
+        // actually been consumed. sendBackspaces schedules the deletions with spacing
+        // and invokes the completion after the last one has settled, so the gap before
+        // the paste scales with deleteCount instead of being a fixed (too-short) delay.
+        sendBackspaces(deleteCount) { [self] in
+            paste(content: content,
+                  trailingTerminator: trailingTerminator,
+                  overrideFormatting: overrideFormatting)
+        }
+    }
 
+    private func paste(content: NSAttributedString,
+                       trailingTerminator: Character?,
+                       overrideFormatting: Bool) {
         let pasteboard = NSPasteboard.general
         let saved = snapshot(pasteboard: pasteboard)
         pasteboard.clearContents()
@@ -67,17 +88,37 @@ final class Expander {
 
     // MARK: - Synthesizing keystrokes
 
-    private func sendBackspaces(_ count: Int) {
-        guard count > 0 else { return }
-        let source = CGEventSource(stateID: .combinedSessionState)
-        for _ in 0..<count {
-            CGEvent(keyboardEventSource: source,
-                    virtualKey: CGKeyCode(kVK_Delete),
-                    keyDown: true)?.post(tap: .cghidEventTap)
-            CGEvent(keyboardEventSource: source,
-                    virtualKey: CGKeyCode(kVK_Delete),
-                    keyDown: false)?.post(tap: .cghidEventTap)
+    /// Post `count` backspaces spaced by `perBackspaceDelay`, then call `completion`
+    /// after `postBackspaceSettle` so the caller only pastes once the destination has
+    /// had time to apply every deletion. Runs on the main run loop (same thread the
+    /// event tap fires on).
+    private func sendBackspaces(_ count: Int, completion: @escaping () -> Void) {
+        guard count > 0 else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + postBackspaceSettle, execute: completion)
+            return
         }
+        postBackspace()
+        func step(_ remaining: Int) {
+            guard remaining > 0 else {
+                DispatchQueue.main.asyncAfter(deadline: .now() + postBackspaceSettle, execute: completion)
+                return
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + perBackspaceDelay) {
+                self.postBackspace()
+                step(remaining - 1)
+            }
+        }
+        step(count - 1)
+    }
+
+    private func postBackspace() {
+        let source = CGEventSource(stateID: .combinedSessionState)
+        CGEvent(keyboardEventSource: source,
+                virtualKey: CGKeyCode(kVK_Delete),
+                keyDown: true)?.post(tap: .cghidEventTap)
+        CGEvent(keyboardEventSource: source,
+                virtualKey: CGKeyCode(kVK_Delete),
+                keyDown: false)?.post(tap: .cghidEventTap)
     }
 
     private func sendCmdV() {
