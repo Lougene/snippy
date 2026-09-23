@@ -6,6 +6,7 @@ struct SnippyApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
     @StateObject private var store: LibraryStore
     @StateObject private var engine: ExpansionEngine
+    @StateObject private var clipboard = ClipboardManager()
 
     init() {
         let store = LibraryStore()
@@ -18,6 +19,7 @@ struct SnippyApp: App {
             MenuContent()
                 .environmentObject(store)
                 .environmentObject(engine)
+                .environmentObject(clipboard)
         } label: {
             Image(systemName: engine.isRunning ? "text.cursor" : "pause.circle")
         }
@@ -41,6 +43,7 @@ struct SnippyApp: App {
             SettingsView()
                 .environmentObject(store)
                 .environmentObject(engine)
+                .environmentObject(clipboard)
         }
     }
 }
@@ -60,6 +63,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 struct MenuContent: View {
     @EnvironmentObject var store: LibraryStore
     @EnvironmentObject var engine: ExpansionEngine
+    @EnvironmentObject var clipboard: ClipboardManager
     @Environment(\.openWindow) private var openWindow
 
     var body: some View {
@@ -73,6 +77,28 @@ struct MenuContent: View {
             Divider()
 
             Text(summary).foregroundStyle(.secondary)
+
+            Divider()
+
+            if clipboard.historyEnabled {
+                Menu("Clipboard History") {
+                    if clipboard.items.isEmpty {
+                        Text("Nothing copied yet")
+                    } else {
+                        ForEach(clipboard.items.prefix(15)) { item in
+                            Button(item.preview(maxLength: 50)) { clipboard.paste(item) }
+                        }
+                        Divider()
+                        Button("Clear History") { clipboard.clearHistory() }
+                    }
+                }
+                Button(clipboard.hotKey == .off
+                       ? "Search Clipboard History…"
+                       : "Search Clipboard History…  \(clipboard.hotKey.label)") {
+                    clipboard.showPicker()
+                }
+            }
+            Toggle("Clean Tracking from Copied Links", isOn: $clipboard.cleanLinks)
 
             Divider()
 

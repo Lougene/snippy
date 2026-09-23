@@ -8,6 +8,11 @@ let package = Package(
         .executableTarget(
             name: "Snippy",
             path: "Sources/Snippy"
+        ),
+        .testTarget(
+            name: "SnippyTests",
+            dependencies: ["Snippy"],
+            path: "Tests/SnippyTests"
         )
     ]
 )

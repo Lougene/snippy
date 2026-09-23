@@ -50,6 +50,17 @@ That's it.
   collisions so you can rename if you'd rather macOS handle it.
 - **Your clipboard is preserved** — Snippy temporarily uses the clipboard to
   paste, then restores whatever you had on it.
+- **Clean links on copy** — copy a link and Snippy strips the tracking junk
+  (`utm_…`, `fbclid`, `gclid`, YouTube/Spotify `si`, Amazon `ref=` paths, etc.)
+  and unwraps Google, Outlook Safe Links, and Facebook redirects. The page, its
+  real parameters (`?v=`, `?id=`, `?q=`), and `#anchors` are kept. Toggle it from
+  the menu bar or Settings.
+- **Clipboard history** — inspired by [Flycut](https://github.com/TermiT/Flycut).
+  Everything you copy (text) is kept in a searchable list. Press **⇧⌘V** from
+  any app to open it, then ↑↓ and ⏎ to paste, or ⌘1–9 to paste one of the top
+  nine. Press ⇧⌘V again while it's open to step down the list. Recent clips are
+  also in the menu bar under *Clipboard History*. The shortcut, history size, and
+  whether history survives a restart are in Settings.
 
 ## Using Snippy
 
@@ -77,6 +88,11 @@ Snippy is built for privacy:
 - **Local-only storage.** Your library is a plain JSON file you can read,
   copy, or version-control yourself. Default location:
   `~/Library/Application Support/Snippy/snippy-library.json`.
+- **Clipboard history stays on this Mac.** It's saved to
+  `~/Library/Application Support/Snippy/clipboard-history.json` (readable only by
+  you), never to your synced library folder. Copies from password managers
+  (anything marked concealed or transient) are never recorded. Turn history off
+  in Settings to stop recording and wipe it.
 - **Accessibility permission** is required to observe keystrokes, like every
   other macOS text expander. The code that uses it is in
   [`Sources/Snippy/Engine/KeystrokeMonitor.swift`](Sources/Snippy/Engine/KeystrokeMonitor.swift)

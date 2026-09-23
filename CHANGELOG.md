@@ -5,6 +5,31 @@ All notable changes to **Snippy by Lever** — a free productivity tool from
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- **Clean links on copy.** When you copy a lone link, Snippy strips tracking
+  parameters (`utm_*`, `fbclid`, `gclid`, `msclkid`, HubSpot/Mailchimp tags,
+  YouTube/Spotify/X share IDs, and more) and unwraps redirect wrappers (Google
+  `/url`, Outlook Safe Links, Facebook/Instagram `l.php`, LinkedIn, YouTube).
+  Amazon and eBay links collapse to their product page. The page path, real
+  parameters, and `#fragment` are kept. On by default; toggle in the menu bar or
+  Settings.
+- **Clipboard history** (Flycut-style). Text you copy is kept in a searchable
+  list. Press ⇧⌘V (configurable to ⌥⌘V, ⌃⌘V, or off) to open the picker, then
+  ↑↓/⏎ or ⌘1–9 to paste. Pressing the shortcut again steps down the list.
+  Recent clips are also in the menu bar. History size is 25–500 items (default
+  100) and is kept across restarts in
+  `~/Library/Application Support/Snippy/clipboard-history.json` (mode 0600).
+  Password-manager copies (`org.nspasteboard.ConcealedType`/`TransientType`) are
+  skipped.
+- Unit tests for link cleaning (`swift test`).
+
+### Changed
+- Snippy's own temporary clipboard writes during snippet expansion are now
+  marked transient, so clipboard managers (Snippy's history, Flycut, Maccy, etc.)
+  don't record them.
+
 ## [1.1.1] — 2026-07-15
 
 ### Fixed

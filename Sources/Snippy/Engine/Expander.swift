@@ -69,13 +69,16 @@ final class Expander {
             if let term = trailingTerminator { text.append(term) }
             pasteboard.setString(text, forType: .string)
         }
+        // Tell clipboard history (ours and third-party) this write is temporary.
+        pasteboard.setData(Data(), forType: .snippyInternal)
+        pasteboard.setData(Data(), forType: .transient)
 
         // Let the pasteboard write commit before pasting, then remember the change
         // count so we can tell if anything else (e.g. a real user copy) touched the
         // clipboard during the restore window.
         let ourChangeCount = pasteboard.changeCount
         DispatchQueue.main.asyncAfter(deadline: .now() + settleDelay) {
-            self.sendCmdV()
+            SyntheticKeys.pasteCommand()
 
             DispatchQueue.main.asyncAfter(deadline: .now() + self.restoreDelay) {
                 // If the change count moved past ours, something else wrote to the
@@ -119,20 +122,6 @@ final class Expander {
         CGEvent(keyboardEventSource: source,
                 virtualKey: CGKeyCode(kVK_Delete),
                 keyDown: false)?.post(tap: .cghidEventTap)
-    }
-
-    private func sendCmdV() {
-        let source = CGEventSource(stateID: .combinedSessionState)
-        let down = CGEvent(keyboardEventSource: source,
-                           virtualKey: CGKeyCode(kVK_ANSI_V),
-                           keyDown: true)
-        down?.flags = .maskCommand
-        down?.post(tap: .cghidEventTap)
-        let up = CGEvent(keyboardEventSource: source,
-                         virtualKey: CGKeyCode(kVK_ANSI_V),
-                         keyDown: false)
-        up?.flags = .maskCommand
-        up?.post(tap: .cghidEventTap)
     }
 
     // MARK: - Plain-text rendering with list markers
@@ -246,6 +235,8 @@ final class Expander {
             }
             return item
         }
+        // The restored content is already in clipboard history; don't re-record it.
+        items.first?.setData(Data(), forType: .snippyInternal)
         if !items.isEmpty {
             pasteboard.writeObjects(items)
         }
