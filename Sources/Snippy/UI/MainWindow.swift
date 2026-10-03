@@ -33,14 +33,29 @@ struct MainWindow: View {
         }
     }
 
+    @ViewBuilder
     private var statusBadge: some View {
-        HStack(spacing: 6) {
-            Circle()
-                .fill(engine.isRunning ? Color.green : Color.orange)
-                .frame(width: 8, height: 8)
-            Text(engine.isRunning ? "Listening" : "Paused")
-                .foregroundStyle(.secondary)
-                .font(.caption)
+        if engine.needsPermission {
+            Button {
+                Permissions.openAccessibilitySettings()
+            } label: {
+                Label("Needs Accessibility", systemImage: "exclamationmark.triangle.fill")
+                    .foregroundStyle(.orange)
+                    .font(.callout)
+            }
+            .help("Snippy can't see keystrokes until you allow it in System Settings → Privacy & Security → Accessibility.")
+        } else {
+            HStack(spacing: 6) {
+                Circle()
+                    .fill(engine.isRunning ? Color.green : Color.orange)
+                    .frame(width: 8, height: 8)
+                Text(engine.isRunning ? "Listening" : "Paused")
+                    .foregroundStyle(.secondary)
+                    .font(.callout)
+            }
+            .padding(.horizontal, 10)
+            .padding(.vertical, 4)
+            .fixedSize()
         }
     }
 

@@ -25,36 +25,29 @@ struct RichTextToolbar: View {
 
             divider
 
-            // Font size
+            // Font size. A macOS Menu ignores frames and padding on a custom
+            // label, so keep the label plain and size the control itself.
             Menu {
                 ForEach(RichTextCoordinator.fontSizes, id: \.self) { size in
                     Button("\(Int(size))") { coordinator.setFontSize(size) }
                 }
             } label: {
-                HStack(spacing: 4) {
-                    Text("\(Int(coordinator.fontSize))")
-                        .font(.system(size: 12, design: .monospaced))
-                    Image(systemName: "chevron.down")
-                        .font(.system(size: 8, weight: .bold))
-                }
-                .frame(minWidth: 38)
-                .padding(.horizontal, 6)
-                .padding(.vertical, 4)
-                .background(Color(NSColor.controlBackgroundColor))
-                .cornerRadius(4)
+                Text("\(Int(coordinator.fontSize))")
+                    .font(.system(size: 12, design: .monospaced))
             }
             .menuStyle(.borderlessButton)
-            .menuIndicator(.hidden)
-            .fixedSize()
+            .frame(width: 48)
             .help("Font size")
 
-            // Text color
+            // Text color. The colour well has a fixed intrinsic width; squeezing
+            // it into a narrower frame makes it spill over its neighbours.
             ColorPicker("", selection: Binding(
                 get: { coordinator.textColor },
                 set: { coordinator.setTextColor($0) }
             ))
             .labelsHidden()
-            .frame(width: 28)
+            .fixedSize()
+            .padding(.leading, 4)
             .help("Text color")
 
             divider

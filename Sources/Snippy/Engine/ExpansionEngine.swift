@@ -19,6 +19,7 @@ final class ExpansionEngine: ObservableObject {
     private let matcher = Matcher()
     private let expander = Expander()
     private var cancellables = Set<AnyCancellable>()
+    private var permissionTimer: Timer?
 
     init(store: LibraryStore) {
         self.store = store
@@ -39,6 +40,15 @@ final class ExpansionEngine: ObservableObject {
 
     func start() {
         guard !isRunning else { return }
+        // Without Accessibility the tap is still created, but macOS hands it no
+        // key-down events — so check the grant rather than trusting tapCreate.
+        guard Permissions.accessibilityGranted else {
+            lastError = Self.permissionError
+            waitForPermission()
+            return
+        }
+        permissionTimer?.invalidate()
+        permissionTimer = nil
         let monitor = KeystrokeMonitor { [weak self] key in
             // Callback runs on the run-loop thread the tap was created on (main).
             guard let self else { return }
@@ -56,11 +66,32 @@ final class ExpansionEngine: ObservableObject {
             isRunning = true
             lastError = nil
         } else {
-            lastError = "Could not create event tap. Grant Accessibility permission in System Settings → Privacy & Security → Accessibility."
+            lastError = Self.permissionError
+        }
+    }
+
+    /// True when the engine is stopped because Accessibility hasn't been granted
+    /// (as opposed to the user pausing it).
+    var needsPermission: Bool { !isRunning && permissionTimer != nil }
+
+    private static let permissionError = "Snippy can't see keystrokes. Grant Accessibility permission in System Settings → Privacy & Security → Accessibility."
+
+    /// Polls until the user grants Accessibility, then starts listening — so they
+    /// don't have to come back and press Start after flipping the switch.
+    private func waitForPermission() {
+        guard permissionTimer == nil else { return }
+        objectWillChange.send()
+        permissionTimer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                guard let self, Permissions.accessibilityGranted else { return }
+                self.start()
+            }
         }
     }
 
     func stop() {
+        permissionTimer?.invalidate()
+        permissionTimer = nil
         monitor?.stop()
         monitor = nil
         isRunning = false
