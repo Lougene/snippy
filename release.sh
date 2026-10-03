@@ -137,9 +137,12 @@ fi
 STABLE_DMG_PATH="${RELEASE_DIR}/${APP_NAME}.dmg"
 cp "$DMG_PATH" "$STABLE_DMG_PATH"
 
+# Remove the staging copy so Spotlight/Launchpad don't show two Snippy.apps.
+# The notarized app lives on inside the DMGs.
+rm -rf "$APP_DIR"
+
 echo
 echo "✓ Release ready:"
-echo "  App: $APP_DIR"
 echo "  DMG (versioned): $DMG_PATH"
 echo "  DMG (stable):    $STABLE_DMG_PATH"
 echo
